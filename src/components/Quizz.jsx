@@ -2,19 +2,15 @@ import { useEffect, useState } from "react";
 import quizzCompletedImage from "../assets/quiz-complete.png";
 import QUESTIONS from '.././questions.js'
 import ProgressBar from "./ProgressBar.jsx";
+const TIMER = 15000;
 
 export default function Quizz(){
 	const [userAnswers, setUserAnswers] = useState([]);
 	const activeQuestionIndex = userAnswers.length;
 	const quizCompleted = activeQuestionIndex == QUESTIONS.length;
 
-	useEffect(() => {
-		setTimeout(() => {
-			console.log('hey')
-		}, 15000)
-	}, [])
-
 	function handleSelectAnswer(answer){
+		console.log('answer', answer);
 		setUserAnswers((prevState) => {
 			return [...prevState, answer]
 		})
@@ -34,7 +30,10 @@ export default function Quizz(){
 		<div id="quiz">
 			<div id="question">
 				<h2>{QUESTIONS[activeQuestionIndex].text}</h2>
-				<ProgressBar />
+				<ProgressBar
+					onTimeout={() => {handleSelectAnswer(null)}}
+				 	timeout={TIMER}
+				 />
 				<ul id="answers">
 					{shuffledAnswers.map(answer => {
 						return <li className="answer" key={answer}>

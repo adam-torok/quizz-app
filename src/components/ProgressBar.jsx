@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react"
-const TIMER = 15000;
-// For every question we have 15 seconds to answer
-// If the timer expires, than skip to the next question
 
-export default function ProgressBar(){
-	const [expireTimer, setExpireTimer] = useState(TIMER);
+export default function ProgressBar({timeout, onTimeout}){
+	const [remainingTime, setRemainingTime] = useState(timeout)
 
 	useEffect(() => {
-		let timer = setInterval(() => {
-			setExpireTimer((prev) => {
-				return prev -= 10
-			}, TIMER)
-		})
+		setTimeout(onTimeout, timeout);
+	}, [timeout, onTimeout])
+
+	useEffect(() => {
+		setInterval(() => {
+			setRemainingTime((prev) => {
+				return prev = prev - 100
+			})
+		}, 100)
 	}, [])
 
-	return <progress max={TIMER} value={expireTimer} />
+
+	return (
+	<>
+		<progress id="guestion-time" max={timeout} value={remainingTime} />
+	</>
+	)
 }
